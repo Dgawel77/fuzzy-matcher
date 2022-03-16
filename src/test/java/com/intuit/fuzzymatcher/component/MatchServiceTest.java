@@ -8,6 +8,8 @@ import com.intuit.fuzzymatcher.function.PreProcessFunction;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -372,10 +374,17 @@ public class MatchServiceTest {
     }
 
     public static CSVReader getCSVReader(String FileName) throws FileNotFoundException {
+        String filePath = null;
+        try {
+            filePath = URLDecoder.decode(MatchServiceTest.class.getClassLoader().getResource(FileName).getFile(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        assert filePath != null;
         return new CSVReaderBuilder(
-                new FileReader(MatchServiceTest.class.getClassLoader().getResource(FileName).getFile()))
-                .withSkipLines(1)
-                .build();
+            new FileReader(filePath))
+            .withSkipLines(1)
+            .build();
     }
 
     @Test
