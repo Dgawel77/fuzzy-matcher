@@ -1,5 +1,6 @@
 package com.intuit.fuzzymatcher.domain;
 
+import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.AbstractMap;
@@ -240,10 +241,12 @@ public class Element<T> implements Matchable {
 
         Element element = (Element) o;
 
-        if (value != null ? !value.equals(element.value) : element.value != null) return false;
-        if (elementClassification != null ? !elementClassification.equals(element.elementClassification) : element.elementClassification != null)
+        if (!Objects.equals(value, element.value))
             return false;
-        return document != null ? document.equals(element.document) : element.document == null;
+        if (!Objects.equals(elementClassification, element.elementClassification))
+            return false;
+
+        return Objects.equals(document, element.document);
     }
 
     @Override
