@@ -53,11 +53,15 @@ public interface ScoringFunction extends BiFunction<Match, List<Score>, Score> {
      */
     static ScoringFunction getWeightedAverageScore() {
         return (match, childScores) -> {
-            double numerator = getSumOfWeightedResult(childScores)
-                    + getUnmatchedChildScore(match);
-            double denominator = getSumOfWeights(childScores)
-                    + getChildCount(match)
-                    - childScores.size();
+            double sumOfWeightedResults = getSumOfWeightedResult(childScores);
+            double unmatchedChildScore = getUnmatchedChildScore(match);
+            double numerator = sumOfWeightedResults + unmatchedChildScore;
+
+            double sumOfWeights = getSumOfWeights(childScores);
+            double childCount = getChildCount(match);
+            double childScoreSize = childScores.size();
+            double denominator = sumOfWeights + childCount - childScoreSize;
+
             return new Score(numerator / denominator, match);
         };
     }

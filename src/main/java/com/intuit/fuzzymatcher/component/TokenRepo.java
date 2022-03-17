@@ -91,9 +91,9 @@ public class TokenRepo {
                     return tokenBinaryTree.subSet(tokenRange.lower, true, tokenRange.higher, true)
                             .stream()
                             .flatMap(val -> tokenElementSet.get(val).stream()).collect(Collectors.toSet());
-
+                default:
+                    return null;
             }
-            return null;
         }
     }
 
